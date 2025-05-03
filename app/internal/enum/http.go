@@ -6,3 +6,10 @@ const (
 	FOR_AUTH_ERROR  int = 401
 	FOR_BAD_REQUEST int = 400
 )
+
+const (
+	SUCCESS_STR     string = "Success"
+	ERROR_STR       string = "Internal Error"
+	AUTH_ERROR_STR  string = "Unauthorized"
+	BAD_REQUEST_STR string = "Bad Request"
+)

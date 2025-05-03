@@ -13,7 +13,7 @@ type Response struct {
 	Timestamp  string      `json:"timestamp,omitempty"`
 	Path       string      `json:"path,omitempty"`
 	RequestID  string      `json:"request_id,omitempty"`
-	Total      int         `json:"total,omitempty"`
+	Total      int64       `json:"total_row,omitempty"`
 	View       echo.Map    `json:"view,omitempty"`
 }
 
@@ -22,7 +22,7 @@ type builderResponse struct {
 	codeX       int
 	dataX       interface{}
 	statusBoolx bool
-	totalX      int
+	totalX      int64
 	reqIDx      string
 	viewX       echo.Map
 }
@@ -56,7 +56,7 @@ func (r *builderResponse) Bool(statusbool bool) *builderResponse {
 	return r
 }
 
-func (r *builderResponse) Total(total int) *builderResponse {
+func (r *builderResponse) Total(total int64) *builderResponse {
 	r.totalX = total
 	return r
 }

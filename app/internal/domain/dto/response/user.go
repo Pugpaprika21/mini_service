@@ -10,4 +10,5 @@ type GetUsers struct {
 	UpdBy    *string `json:"upd_by"`
 	UpdDate  *string `json:"upd_date"`
 	ProgID   *string `json:"prog_id"`
+	TotalRow *int64  `json:"total_row"`
 }
