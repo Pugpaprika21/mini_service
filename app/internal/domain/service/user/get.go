@@ -9,35 +9,52 @@ import (
 	"strings"
 )
 
-func (u *userService) GetUsers(ctx context.Context, req *request.GetUsers, qry *qryparam.GetUsers) ([]response.GetUsers, error) {
-	var sql sqlx.Sqlx
+func (u *userService) GetUsers(ctx context.Context, req *request.GetUsers, qry *qryparam.GetUsers) ([]response.GetUsers, int64, error) {
+	var sqlstr strings.Builder
+	var whereClauses []string
+	var args []interface{}
+	var totalRow int64
 
-	sql.Stmt = `SELECT user_id, username, password, cre_by, cre_date, upd_by, upd_date, prog_id, is_active FROM users `
+	sqlstr.WriteString(`
+		SELECT user_id, username, password, cre_by, cre_date, upd_by, upd_date, prog_id, is_active,
+		(
+			SELECT COUNT(1) FROM users WHERE is_active IS NULL OR is_active <> 1
+		) AS total_row
+		FROM users
+	`)
 
 	if req.UserID != nil && *req.UserID != 0 {
-		sql.WhereClause = append(sql.WhereClause, "user_id = ?")
-		sql.Args = append(sql.Args, req.UserID)
+		whereClauses = append(whereClauses, "user_id = ?")
+		args = append(args, req.UserID)
 	}
 
-	if req.Username != nil && *req.Password != "" {
-		sql.WhereClause = append(sql.WhereClause, "username = ?")
-		sql.Args = append(sql.Args, req.Username)
+	if req.Username != nil && *req.Username != "" {
+		whereClauses = append(whereClauses, "username = ?")
+		args = append(args, req.Username)
 	}
 
 	if req.Password != nil && *req.Password != "" {
-		sql.WhereClause = append(sql.WhereClause, "password = ?")
-		sql.Args = append(sql.Args, req.Password)
+		whereClauses = append(whereClauses, "password = ?")
+		args = append(args, req.Password)
 	}
 
-	if len(sql.WhereClause) > 0 {
-		sql.Stmt += " WHERE " + strings.Join(sql.WhereClause, " and ")
+	if len(whereClauses) > 0 {
+		sqlstr.WriteString(" WHERE ")
+		sqlstr.WriteString(strings.Join(whereClauses, " AND "))
 	}
 
-	sql.Stmt += " ORDER BY cre_date DESC"
+	sqlstr.WriteString(" ORDER BY cre_date DESC")
 
-	rows, err := u.repository.GetUsers(ctx, sql)
+	if req.Lazyload != nil && req.Lazyload.PageNo != nil && *req.Lazyload.PageNo != 0 && req.Lazyload.PageSize != nil && *req.Lazyload.PageSize != 0 {
+		limit := *req.Lazyload.PageSize
+		offset := (*req.Lazyload.PageNo - 1) * limit
+		sqlstr.WriteString(" LIMIT ? OFFSET ?")
+		args = append(args, limit, offset)
+	}
+
+	rows, err := u.repository.GetUsers(ctx, sqlx.Sqlx{Stmt: sqlstr.String(), Args: args})
 	if err != nil {
-		return nil, err
+		return nil, totalRow, err
 	}
 
 	resp := make([]response.GetUsers, len(rows))
@@ -52,8 +69,13 @@ func (u *userService) GetUsers(ctx context.Context, req *request.GetUsers, qry *
 			UpdBy:    &rec.UpdBy.String,
 			UpdDate:  &rec.UpdDate.String,
 			ProgID:   &rec.ProgID.String,
+			TotalRow: &rec.TotalRow.Int64,
 		}
 	}
 
-	return resp, nil
+	if len(resp) > 0 {
+		totalRow = *resp[0].TotalRow
+	}
+
+	return resp, totalRow, nil
 }

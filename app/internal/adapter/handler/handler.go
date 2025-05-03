@@ -11,6 +11,6 @@ type Handler struct {
 
 func New(service *service.Service) *Handler {
 	return &Handler{
-		user.NewUserhandler(service.UserService),
+		UserHandler: user.NewUserhandler(service.UserService),
 	}
 }

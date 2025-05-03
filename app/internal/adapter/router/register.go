@@ -4,8 +4,10 @@ import (
 	"miniservice/app/internal/adapter/appmiddleware"
 	"miniservice/app/internal/adapter/handler"
 	"miniservice/app/pkg/jwtx"
+	"net/http"
 	"os"
 
+	"github.com/go-playground/validator"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -13,6 +15,17 @@ import (
 type ConfigVariantRouter struct {
 	Handler *handler.Handler
 	Jwtx    jwtx.IJwtx
+}
+
+type echoValidator struct {
+	validator *validator.Validate
+}
+
+func (cv *echoValidator) Validate(i interface{}) error {
+	if err := cv.validator.Struct(i); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	return nil
 }
 
 type router struct {
@@ -35,6 +48,8 @@ func (r *router) Register() {
 	route.Use(appmiddleware.ReqLogger())
 	route.Use(middleware.Recover())
 	route.Use(middleware.CORS())
+	route.Use(middleware.RequestID())
+	route.Validator = &echoValidator{validator: validator.New()}
 
 	root := route.Group("api")
 

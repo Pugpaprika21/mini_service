@@ -9,7 +9,7 @@ import (
 )
 
 type IUserService interface {
-	GetUsers(ctx context.Context, req *request.GetUsers, qry *qryparam.GetUsers) ([]response.GetUsers, error)
+	GetUsers(ctx context.Context, req *request.GetUsers, qry *qryparam.GetUsers) ([]response.GetUsers, int64, error)
 }
 
 type userService struct {

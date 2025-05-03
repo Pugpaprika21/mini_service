@@ -12,4 +12,5 @@ type GetUsers struct {
 	UpdDate  sql.NullString `gorm:"column:upd_date"`
 	ProgID   sql.NullString `gorm:"column:prog_id"`
 	IsActive sql.NullInt64  `gorm:"column:is_active"`
+	TotalRow sql.NullInt64  `gorm:"column:total_row"`
 }
