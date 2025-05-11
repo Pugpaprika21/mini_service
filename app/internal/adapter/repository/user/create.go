@@ -7,8 +7,20 @@ import (
 )
 
 func (u *userRepository) CreUsers(ctx context.Context, params []schema.CreUsers) error {
-	if err := u.db.WithContext(ctx).Table("users").Create(&params).Error; err != nil {
+	tx := u.db.WithContext(ctx).Begin()
+
+	if err := tx.Error; err != nil {
 		return errors.WrapDBError(err)
 	}
+
+	if err := tx.Table("users").Create(&params).Error; err != nil {
+		tx.Rollback()
+		return errors.WrapDBError(err)
+	}
+
+	if err := tx.Commit().Error; err != nil {
+		return errors.WrapDBError(err)
+	}
+
 	return nil
 }
