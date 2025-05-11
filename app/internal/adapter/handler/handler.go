@@ -6,7 +6,7 @@ import (
 )
 
 type Handler struct {
-	UserHandler user.IUserhandler
+	UserHandler user.IUserHandler
 }
 
 func New(service *service.Service) *Handler {

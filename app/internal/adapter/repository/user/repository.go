@@ -10,6 +10,7 @@ import (
 
 type IUserRepository interface {
 	GetUsers(ctx context.Context, sql sqlx.Sqlx) ([]schema.GetUsers, error)
+	CreUsers(ctx context.Context, params []schema.CreUsers) error
 }
 
 type userRepository struct {

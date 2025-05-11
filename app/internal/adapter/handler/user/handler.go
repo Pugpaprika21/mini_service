@@ -6,14 +6,15 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type IUserhandler interface {
+type IUserHandler interface {
 	GetUsers(c echo.Context) error
+	CreUsers(c echo.Context) error
 }
 
-type userhandler struct {
+type userHandler struct {
 	service user.IUserService
 }
 
-func NewUserhandler(service user.IUserService) IUserhandler {
-	return &userhandler{service: service}
+func NewUserhandler(service user.IUserService) IUserHandler {
+	return &userHandler{service: service}
 }
