@@ -1,5 +1,7 @@
 package sqlx
 
+import "time"
+
 type Sqlx struct {
 	Stmt        string
 	Args        []interface{}
@@ -21,4 +23,10 @@ func Nil[T comparable](value *T) *T {
 		return nil
 	}
 	return value
+}
+
+func DateTimeNow() string {
+	now := time.Now()
+	formatted := now.Format("2006-01-02 15:04:05")
+	return formatted
 }

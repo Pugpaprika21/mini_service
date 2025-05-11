@@ -10,6 +10,7 @@ import (
 
 type IUserService interface {
 	GetUsers(ctx context.Context, req *request.GetUsers, qry *qryparam.GetUsers) ([]response.GetUsers, int64, error)
+	CreUsers(ctx context.Context, req *request.CreUsers) error
 }
 
 type userService struct {

@@ -13,3 +13,7 @@ const (
 	AUTH_ERROR_STR  string = "Unauthorized"
 	BAD_REQUEST_STR string = "Bad Request"
 )
+
+const (
+	NO_DATA_PROVIDED_STR string = "No Data Provided"
+)

@@ -1,7 +1,6 @@
 package user
 
 import (
-	"miniservice/app/internal/domain/dto/qryparam"
 	"miniservice/app/internal/domain/dto/request"
 	"miniservice/app/internal/enum"
 	"miniservice/app/pkg/response"
@@ -10,9 +9,8 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func (u *userHandler) GetUsers(c echo.Context) error {
-	var req request.GetUsers
-	var qry qryparam.GetUsers
+func (u *userHandler) CreUsers(c echo.Context) error {
+	var req request.CreUsers
 	var reqID = c.Response().Header().Get(echo.HeaderXRequestID)
 	var resp = response.NewResponseBuilder()
 
@@ -30,10 +28,10 @@ func (u *userHandler) GetUsers(c echo.Context) error {
 		)
 	}
 
-	data, totalRow, err := u.service.GetUsers(c.Request().Context(), &req, &qry)
+	err := u.service.CreUsers(c.Request().Context(), &req)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, resp.Message(err.Error()).Code(enum.FOR_ERROR).RequestID(reqID).Build())
 	}
 
-	return c.JSON(http.StatusOK, resp.Message(enum.SUCCESS_STR).Code(200).RequestID(reqID).Total(totalRow).Data(data).Build())
+	return c.JSON(http.StatusOK, resp.Message(enum.SUCCESS_STR).Code(200).RequestID(reqID).Build())
 }
