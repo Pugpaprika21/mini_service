@@ -5,4 +5,5 @@ type Lazyload struct {
 	PageSize    *int    `json:"page_size"`
 	SortBy      *string `json:"sort_by"`
 	SearchField *string `json:"search_field"`
+	IsActive    *string `json:"is_active"`
 }

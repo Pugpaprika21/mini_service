@@ -1,4 +1,4 @@
-package appmiddleware
+package custmiddleware
 
 import (
 	"github.com/labstack/echo/v4"

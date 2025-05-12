@@ -10,7 +10,10 @@ import (
 
 type IUserRepository interface {
 	GetUsers(ctx context.Context, sql sqlx.Sqlx) ([]schema.GetUsers, error)
+	FindUser(ctx context.Context, sql sqlx.Sqlx) (*schema.FindUser, error)
 	CreUsers(ctx context.Context, params []schema.CreUsers) error
+	DelUser(ctx context.Context, sql sqlx.Sqlx) error
+	DelUserIsActive(ctx context.Context, sql sqlx.Sqlx) error
 }
 
 type userRepository struct {

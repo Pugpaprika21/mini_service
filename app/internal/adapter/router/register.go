@@ -1,7 +1,7 @@
 package router
 
 import (
-	"miniservice/app/internal/adapter/appmiddleware"
+	"miniservice/app/internal/adapter/custmiddleware"
 	"miniservice/app/internal/adapter/handler"
 	"miniservice/app/pkg/jwtx"
 	"net/http"
@@ -45,7 +45,7 @@ func New(conf *ConfigVariantRouter) *router {
 func (r *router) Register() {
 	route := r.server
 
-	route.Use(appmiddleware.ReqLogger())
+	route.Use(custmiddleware.ReqLogger())
 	route.Use(middleware.Recover())
 	route.Use(middleware.CORS())
 	route.Use(middleware.RequestID())

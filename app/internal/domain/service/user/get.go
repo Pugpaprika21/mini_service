@@ -38,6 +38,9 @@ func (u *userService) GetUsers(ctx context.Context, req *request.GetUsers, qry *
 		args = append(args, req.Password)
 	}
 
+	whereClauses = append(whereClauses, "is_active = ?")
+	args = append(args, 0)
+
 	if len(whereClauses) > 0 {
 		sqlstr.WriteString(" WHERE ")
 		sqlstr.WriteString(strings.Join(whereClauses, " AND "))
