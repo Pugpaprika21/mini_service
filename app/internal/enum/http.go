@@ -17,5 +17,6 @@ const (
 )
 
 const (
-	NO_DATA_PROVIDED_STR string = "No Data Provided"
+	NO_DATA_PROVIDED_CRE_STR string = "No Data Create Provided"
+	NO_DATA_PROVIDED_UPD_STR string = "No Data Create Provided"
 )

@@ -10,6 +10,7 @@ type IUserHandler interface {
 	GetUsers(c echo.Context) error
 	FindUser(c echo.Context) error
 	CreUsers(c echo.Context) error
+	UpdUser(c echo.Context) error
 	DelUser(c echo.Context) error
 }
 
