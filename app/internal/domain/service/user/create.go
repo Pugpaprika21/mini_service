@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 	"miniservice/app/internal/domain/dto/request"
-	"miniservice/app/internal/domain/dto/schema"
 	"miniservice/app/internal/enum"
+	"miniservice/app/internal/persistence/schema"
 	"miniservice/app/pkg/sqlx"
 )
 
@@ -17,7 +17,7 @@ func (u *userService) CreUsers(ctx context.Context, req *request.CreUsers) error
 	}
 
 	params := make([]schema.CreUsers, len(rows))
-	for i, rec := range req.CreUsersRows {
+	for i, rec := range rows {
 		params[i] = schema.CreUsers{
 			Username: sqlx.Nil(rec.Username),
 			Password: sqlx.Nil(rec.Password),

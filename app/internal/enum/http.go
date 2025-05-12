@@ -12,6 +12,8 @@ const (
 	ERROR_STR       string = "Internal Error"
 	AUTH_ERROR_STR  string = "Unauthorized"
 	BAD_REQUEST_STR string = "Bad Request"
+	//
+	IS_ACTIVE string = "IS_ACTIVE"
 )
 
 const (
