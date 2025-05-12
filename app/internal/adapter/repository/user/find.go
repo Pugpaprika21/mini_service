@@ -2,7 +2,7 @@ package user
 
 import (
 	"context"
-	"miniservice/app/internal/domain/dto/schema"
+	"miniservice/app/internal/persistence/schema"
 	"miniservice/app/pkg/errors"
 	"miniservice/app/pkg/sqlx"
 )

@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 	"miniservice/app/internal/domain/dto/request"
-	"miniservice/app/internal/domain/dto/schema"
 	"miniservice/app/internal/enum"
+	"miniservice/app/internal/persistence/schema"
 	"miniservice/app/pkg/sqlx"
 )
 
