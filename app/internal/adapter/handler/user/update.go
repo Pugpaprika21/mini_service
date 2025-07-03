@@ -1,6 +1,7 @@
 package user
 
 import (
+	"log/slog"
 	"miniservice/app/internal/domain/dto/request"
 	"miniservice/app/internal/enum"
 	"miniservice/app/pkg/response"
@@ -9,12 +10,13 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func (u *userHandler) UpdUser(c echo.Context) error {
+func (h *userHandler) UpdUser(c echo.Context) error {
 	var req request.UpdUser
 	var reqID = c.Response().Header().Get(echo.HeaderXRequestID)
 	var resp = response.NewResponseBuilder()
 
 	if err := c.Bind(&req); err != nil {
+		h.logger.Error("bind error", slog.Any("handler", req))
 		return c.JSON(
 			http.StatusBadRequest,
 			resp.Message(err.Error()).Code(enum.FOR_BAD_REQUEST).RequestID(reqID).Build(),
@@ -22,13 +24,14 @@ func (u *userHandler) UpdUser(c echo.Context) error {
 	}
 
 	if err := c.Validate(&req); err != nil {
+		h.logger.Error("validate error", slog.Any("handler", req))
 		return c.JSON(
 			http.StatusBadRequest,
 			resp.Message(err.Error()).Code(enum.FOR_BAD_REQUEST).RequestID(reqID).Build(),
 		)
 	}
 
-	err := u.service.UpdUser(c.Request().Context(), &req)
+	err := h.service.UpdUser(c.Request().Context(), &req)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, resp.Message(err.Error()).Code(enum.FOR_ERROR).RequestID(reqID).Build())
 	}

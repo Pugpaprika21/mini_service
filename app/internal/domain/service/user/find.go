@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func (u *userService) FindUser(ctx context.Context, req *request.FindUser, qry *qryparam.FindUser) (*response.FindUser, error) {
+func (s *userService) FindUser(ctx context.Context, req *request.FindUser, qry *qryparam.FindUser) (*response.FindUser, error) {
 	var sqlstr strings.Builder
 	var whereClauses []string
 	var args []interface{}
@@ -39,7 +39,7 @@ func (u *userService) FindUser(ctx context.Context, req *request.FindUser, qry *
 		sqlstr.WriteString(strings.Join(whereClauses, " AND "))
 	}
 
-	rec, err := u.repository.FindUser(ctx, sqlx.Sqlx{Stmt: sqlstr.String(), Args: args})
+	rec, err := s.repository.FindUser(ctx, sqlx.Sqlx{Stmt: sqlstr.String(), Args: args})
 	if err != nil {
 		return nil, err
 	}

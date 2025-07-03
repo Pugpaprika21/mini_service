@@ -1,6 +1,7 @@
 package user
 
 import (
+	"log/slog"
 	"miniservice/app/internal/domain/dto/qryparam"
 	"miniservice/app/internal/domain/dto/request"
 	"miniservice/app/internal/enum"
@@ -10,13 +11,14 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func (u *userHandler) GetUsers(c echo.Context) error {
+func (h *userHandler) GetUsers(c echo.Context) error {
 	var req request.GetUsers
 	var qry qryparam.GetUsers
 	var reqID = c.Response().Header().Get(echo.HeaderXRequestID)
 	var resp = response.NewResponseBuilder()
 
 	if err := c.Bind(&req); err != nil {
+		h.logger.Error("bind error", slog.Any("handler", req))
 		return c.JSON(
 			http.StatusBadRequest,
 			resp.Message(err.Error()).Code(enum.FOR_BAD_REQUEST).RequestID(reqID).Build(),
@@ -24,13 +26,14 @@ func (u *userHandler) GetUsers(c echo.Context) error {
 	}
 
 	if err := c.Validate(&req); err != nil {
+		h.logger.Error("validate error", slog.Any("handler", req))
 		return c.JSON(
 			http.StatusBadRequest,
 			resp.Message(err.Error()).Code(enum.FOR_BAD_REQUEST).RequestID(reqID).Build(),
 		)
 	}
 
-	data, totalRow, err := u.service.GetUsers(c.Request().Context(), &req, &qry)
+	data, totalRow, err := h.service.GetUsers(c.Request().Context(), &req, &qry)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, resp.Message(err.Error()).Code(enum.FOR_ERROR).RequestID(reqID).Build())
 	}
