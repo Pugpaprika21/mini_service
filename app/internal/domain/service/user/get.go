@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func (u *userService) GetUsers(ctx context.Context, req *request.GetUsers, qry *qryparam.GetUsers) ([]response.GetUsers, int64, error) {
+func (s *userService) GetUsers(ctx context.Context, req *request.GetUsers, qry *qryparam.GetUsers) ([]response.GetUsers, int64, error) {
 	var sqlstr strings.Builder
 	var whereClauses []string
 	var args []interface{}
@@ -55,7 +55,7 @@ func (u *userService) GetUsers(ctx context.Context, req *request.GetUsers, qry *
 		args = append(args, limit, offset)
 	}
 
-	rows, err := u.repository.GetUsers(ctx, sqlx.Sqlx{Stmt: sqlstr.String(), Args: args})
+	rows, err := s.repository.GetUsers(ctx, sqlx.Sqlx{Stmt: sqlstr.String(), Args: args})
 	if err != nil {
 		return nil, totalRow, err
 	}

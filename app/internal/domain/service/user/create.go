@@ -9,7 +9,7 @@ import (
 	"miniservice/app/pkg/sqlx"
 )
 
-func (u *userService) CreUsers(ctx context.Context, req *request.CreUsers) error {
+func (s *userService) CreUsers(ctx context.Context, req *request.CreUsers) error {
 	var dt string = sqlx.DateTimeNow()
 	var rows []*request.CreUsersRows = req.CreUsersRows
 	if rows == nil || len(rows) == 0 {
@@ -30,7 +30,7 @@ func (u *userService) CreUsers(ctx context.Context, req *request.CreUsers) error
 		}
 	}
 
-	err := u.repository.CreUsers(ctx, params)
+	err := s.repository.CreUsers(ctx, params)
 	if err != nil {
 		return err
 	}

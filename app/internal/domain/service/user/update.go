@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func (u *userService) UpdUser(ctx context.Context, req *request.UpdUser) error {
+func (s *userService) UpdUser(ctx context.Context, req *request.UpdUser) error {
 	var sqlstr strings.Builder
 	var whereClauses []string
 	var args []interface{}
@@ -43,7 +43,7 @@ func (u *userService) UpdUser(ctx context.Context, req *request.UpdUser) error {
 			sqlstr.WriteString(strings.Join(whereClauses, " AND "))
 		}
 
-		err := u.repository.UpdUser(ctx, params, sqlx.Sqlx{Stmt: sqlstr.String(), Args: args})
+		err := s.repository.UpdUser(ctx, params, sqlx.Sqlx{Stmt: sqlstr.String(), Args: args})
 		if err != nil {
 			return err
 		}

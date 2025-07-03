@@ -6,8 +6,8 @@ import (
 	"miniservice/app/pkg/errors"
 )
 
-func (u *userRepository) CreUsers(ctx context.Context, params []schema.CreUsers) error {
-	tx := u.db.WithContext(ctx).Begin()
+func (r *userRepository) CreUsers(ctx context.Context, params []schema.CreUsers) error {
+	tx := r.db.WithContext(ctx).Begin()
 
 	if err := tx.Error; err != nil {
 		return errors.WrapDBError(err)

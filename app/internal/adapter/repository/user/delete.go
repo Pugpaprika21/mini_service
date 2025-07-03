@@ -7,8 +7,8 @@ import (
 	"miniservice/app/pkg/sqlx"
 )
 
-func (u *userRepository) DelUser(ctx context.Context, sql sqlx.Sqlx) error {
-	tx := u.db.WithContext(ctx).Begin()
+func (r *userRepository) DelUser(ctx context.Context, sql sqlx.Sqlx) error {
+	tx := r.db.WithContext(ctx).Begin()
 
 	if err := tx.Error; err != nil {
 		return errors.WrapDBError(err)
