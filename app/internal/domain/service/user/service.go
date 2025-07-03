@@ -12,6 +12,7 @@ type IUserService interface {
 	GetUsers(ctx context.Context, req *request.GetUsers, qry *qryparam.GetUsers) ([]response.GetUsers, int64, error)
 	FindUser(ctx context.Context, req *request.FindUser, qry *qryparam.FindUser) (*response.FindUser, error)
 	CreUsers(ctx context.Context, req *request.CreUsers) error
+	UpdUser(ctx context.Context, req *request.UpdUser) error
 	DelUser(ctx context.Context, req *request.DelUser) error
 }
 

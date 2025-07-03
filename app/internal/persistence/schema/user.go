@@ -38,3 +38,15 @@ type CreUsers struct {
 	ProgID   *string `gorm:"column:prog_id"`
 	IsActive *int32  `gorm:"column:is_active"`
 }
+
+type UpdUser struct {
+	UserID   *int64  `gorm:"column:user_id"`
+	Username *string `gorm:"column:username"`
+	Password *string `gorm:"column:password"`
+	CreBy    *string `gorm:"column:cre_by"`
+	CreDate  *string `gorm:"column:cre_date"`
+	UpdBy    *string `gorm:"column:upd_by"`
+	UpdDate  *string `gorm:"column:upd_date"`
+	ProgID   *string `gorm:"column:prog_id"`
+	IsActive *int32  `gorm:"column:is_active"`
+}

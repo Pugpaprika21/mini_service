@@ -19,13 +19,12 @@ func (u *userService) DelUser(ctx context.Context, req *request.DelUser) error {
 		args = append(args, req.UserID)
 	}
 
-	switch {
-	case req.IsActive != nil && *req.IsActive == enum.IS_ACTIVE:
+	if req.IsActive != nil && *req.IsActive == enum.IS_ACTIVE {
 		sqlstr.WriteString(`UPDATE users SET upd_date = NOW(), is_active = '1'`)
 		sqlstr.WriteString(whereBuilder.String())
 		err = u.repository.DelUserIsActive(ctx, sqlx.Sqlx{Stmt: sqlstr.String(), Args: args})
 		sqlstr.Reset()
-	default:
+	} else {
 		sqlstr.WriteString(`DELETE FROM users`)
 		sqlstr.WriteString(whereBuilder.String())
 		err = u.repository.DelUser(ctx, sqlx.Sqlx{Stmt: sqlstr.String(), Args: args})
